@@ -1,0 +1,109 @@
+[P4] WEEK4—MACHINE LEARNING FUNDAMENTALS
+[P5] Building and Validating a Basic Machine Learning Model:Predicting National Happiness Classification from the World Happiness Report
+[P15] Prepared by:G.Nuhita
+[P18] Task Objective
+[P19] This report documents the end-to-end development of a basic supervised machine learning model, from data preprocessing through model selection, training, and evaluation, as required for the Week 4 assignment on ML model development fundamentals. The dataset used is the World Happiness Report (world_happiness_report.csv), which contains country-level happiness scores and their contributing socio-economic factors across multiple years (2015-2022).
+[P20] The chosen problem is a binary classification task: predicting whether a country is 'Happy' (happiness score above the sample median) or 'Not Happy' (at or below the median) using six socio-economic indicators: GDP per capita, family/social support, health (life expectancy), freedom, government trust, and generosity.
+[P22] Data Preparation
+[P23] Initial Inspection
+[P24] The raw file contains 1,231 rows spanning years 2015 to 2022 and 14 columns, including Country,
+[P25] Region, Happiness Rank, Happiness Score, and six socio-economic feature columns. An initial null-value audit revealed a significant data quality issue: only the 2015 and 2016 records (315 rows combined) have populated values for Happiness Score and all six feature columns. Rows for 2017-2022 (916 rows) are entirely null for these columns, indicating a schema mismatch introduced when the different yearly report files were concatenated into a single CSV (each year's original report used slightly different column names/orderings).
+[P26] CleaningSteps
+[P27] ● Dropped all rows with missing values in the feature columns or target column (dropna),
+[P28] restricting the modelling dataset to the 315 complete 2015-2016 records — this avoids imputing
+[P29] values for an entirely-missing 6-year block, which would not be statistically defensible.
+[P30] ● Removed duplicate (Country, year) pairs to guarantee one observation per country-year.
+[P31] ● Verified feature ranges using describe() — no negative values or obvious outliers/typos were
+[P32] found in the Economy, Family, Health, Freedom, Trust or Generosity columns.
+[P33] ● Dropped the Standard Error, Dystopia Residual and Happiness Rank columns from the feature
+[P34] set, since Rank and Dystopia Residual are mathematically derived from (or a residual of) the
+[P35] Happiness Score itself and would leak target information into the model.
+[P39] TargetVariableEngineering
+[P40] The original Happiness Score is a continuous variable. To fit the classification-focused rubric of this assignment (confusion matrix, ROC curve), it was converted into a binary label: Happy = 1 if the score is above the sample median (5.286), otherwise Happy = 0. This median split produces a naturally balanced target (158 vs 157 countries), which avoids class-imbalance issues during evaluation.
+[P41] FeatureCorrelation
+[P43] Figure1: Correlationmatrixofthesixsocio-economicfeaturesagainstHappinessScore.Economy(GDPpercapita), Family, and Health show the strongest positive correlation with happiness.
+[P45] Train/TestSplitandScaling
+[P46] The clean dataset(315rows)was split into a 75% training set(236rows)and a 25%held-outtest set(79 rows), stratified on the target to preserve class balance in both sets. All six features were standardized (zero mean, unit variance) using StandardScaler, fitted only on the training data to prevent test-set information leaking into the scaling step.
+[P49] Model Selection and Training
+[P50] Algorithm Choice
+[P51] Logistic Regression was selected as the primary algorithm. It is well suited to this task because: 
+[P52] (a) the problem is binary classification on a modest number of numeric,roughly linearly-related features;
+[P53] (b)it is simple, fast to train, and produces directly interpretable coefficients that show how each socio-economic factor drives the happiness classification; and
+[P54]  (c) it is the standard baseline algorithm recommended for introductory model-development exercises.
+[P55] A Decision Tree Classifier (max_depth = 4) was trained as a second, comparison model. Including a second algorithm strengthens the evaluation section:it allows a direct comparison of a linearmodel against a non-linear, rule-based model on the same train/test split, and gives concrete material for discussing overfitting.
+[P57] Why These Hyperparameters
+[P58] ● Logistic Regression: default L2 regularization was kept (C=1.0) since the feature set is small (6
+[P59] features) and standardized, giving a well-conditioned optimization problem with no need for
+[P60] aggressive regularization tuning at this introductory stage.
+[P61] ● Decision Tree: max_depth was capped at 4 to keep the tree interpretable and to deliberately
+[P62] illustrate the bias-variance trade-off discussed in Section 5 — an unconstrained tree memorizes
+[P63] the training data almost perfectly but generalizes worse.
+[P65] Evaluation
+[P66] Performance Metrics
+[P67] Both models were evaluated on the untouched 25% test set using accuracy, precision, recall and F1-score. Training accuracy is also reported alongside test accuracy to expose any overfitting gap.
+[P69] Logistic Regression outperforms the Decision Tree on every test-set metric and shows a much smaller gap between training and test accuracy (5.5 percentage points vs 17.7 points for the tree) — the first quantitative signal of overfitting in the tree model, discussed further in Section 5.
+[P72] Confusion Matrices
+[P74] Figure2: Confusion matrice son the test set(n=79).LogisticRegressioncorrectlyclassifies66/79 countries(36 true negatives + 30 true positives); the Decision Tree correctly classifies 59/79.
+[P77] Both models make more errors of one type than the other. Logistic Regression has a slight recallweakness on the 'Happy' class (9 happy countries misclassified as 'Not Happy'), meaning it is somewhat conservative about labelling a country as happy. The Decision Tree shows a larger version of the same pattern (13 false negatives), consistent with its lower recall score of 0.667.
+[P80] ROC Curve
+[P82] Figure 3: ROC curves for both models. Logistic Regression achieves AUC = 0.939 versus 0.857 for the Decision Tree, confirming it separates the two classes more reliably across all classification thresholds, not just the default 0.5 cutoff.
+[P85] Feature Importance/Coefficients
+[P88] Figure 4: Standardized Logistic Regression coefficients (left) and Decision Tree feature importance (right). Both models agree that Economy(GDP per capita)is the single strongest driver of the happiness classification, followed by Health (Life Expectancy) and Family.
+[P91] Critical Discussion:Errors,Overfitting,andImprovements
+[P92] SourcesofError
+[P93] Small sample size: after cleaning, only 315 labelled observations remain (from an original 1,231-
+[P94] row file), because six of the eight years in the raw data were unusable. A test set of only 79
+[P95] countries means each misclassified country shifts the reported accuracy by more than one
+[P96] percentage point, so the metrics above carry meaningful sampling variance.
+[P97] ● Median-split label noise: countries whose true happiness score sits very close to the 5.286
+[P98] median threshold are, by construction, almost a coin-flip between the two classes. Several of
+[P99] the models' errors are plausibly these borderline cases rather than genuine model failure.
+[P100] ● Limited temporal coverage: restricting the data to 2015-2016 means the model has not seen
+[P101] more recent years (2017-2022) and cannot be assumed to generalize to them without the
+[P102] schema issue in the source file being fixed first.
+[P103] ● Omitted variables: the six features do not capture everything that plausibly affects national
+[P104] happiness (e.g., political stability indices, inequality measures, climate), so some residual error is
+[P105] expected regardless of the model chosen.
+[P107] Overfitting vs Underfitting
+[P108] The Decision Tree shows classic overfitting: 92.4% training accuracy but only 74.7% test accuracy, a 17.7- point gap. With max_depth=4 the tree still has enough flexibility to fit noise/idiosyncrasies in the small training set (236 rows) that do not generalize. Logistic Regression, by contrast, shows a much smaller train-test gap (89.0% vs 83.5%), indicating a better bias-variance balance for this dataset size — its linear decision boundary is a good match for the roughly linear relationship visible in Section 2.4 correlation heatmap. Neither model shows signs of underfitting (both comfortably beat the 50% majority-class baseline), so the priority for improvement is reducing the tree's variance rather than increasing either model's capacity.
+[P109] Suggestions for Improvement
+[P110] ● Fix the source data pipeline so 2017-2022 records are correctly populated, growing the usable
+[P111] sample from 315 to well over 1,000 rows — this alone would likely narrow the Decision Tree's
+[P112] overfitting gap.
+[P113] ● Apply k-fold cross-validation (e.g., 5-fold) instead of a single train/test split to obtain a more
+[P114] stable estimate of generalisation performance given the small sample.
+[P115] ● Tune hyperparameters systematically (e.g., GridSearchCV over Logistic Regression's C, or the
+[P116] tree's max_depth / min_samples_leaf) rather than using single fixed values.
+[P117] ● Try an ensemble method such as Random Forest or Gradient Boosting, which typically reduces a single decision tree's variance while keeping non-linear modelling power.
+[P118] ● Treat the problem as regression (predicting the continuous Happiness Score directly, evaluated
+[P119] with RMSE/R²) to avoid discarding information at the median-split boundary.
+[P121] Conclusion
+[P122] This project implemented a complete, reproducible ML pipeline — from data quality diagnosis and cleaning, through feature engineering, model training, and multi-metric evaluation — on the World Happiness Report dataset. Logistic Regression was identified as the stronger of the two models tested (83.5% test accuracy, 0.939 ROC-AUC) and generalises more reliably than the Decision Tree, which overfits the small training sample. GDP per capita emerged as the most influential predictor of a country's happiness classification under both models. The exercise highlighted that, for small and imperfectly collected real-world datasets, careful data auditing and model comparison are as important to the outcome as the choice of algorithm itself.
+[P123] AppendixA:FullPreprocessingandModellingCode
+[P124] importpandasaspd
+[P125] fromsklearn.model_selectionimporttrain_test_split from sklearn.preprocessing import StandardScaler from sklearn.linear_model import LogisticRegression from sklearn.tree import DecisionTreeClassifier
+[P126] fromsklearn.metricsimport(accuracy_score,precision_score, recall_score,f1_score,confusion_matrix,roc_curve,auc)
+[P128] #1.Load& clean
+[P129] df_raw=pd.read_csv('world_happiness_report.csv') FEATURES = ['Economy (GDP per Capita)', 'Family',
+[P130] 'Health(LifeExpectancy)','Freedom',
+[P131] 'Trust(GovernmentCorruption)','Generosity']
+[P132] df=df_raw.dropna(subset=FEATURES+['HappinessScore']).copy() df = df.drop_duplicates(subset=['Country', 'year'])
+[P134] #2. Targetengineering
+[P135] median_score=df['HappinessScore'].median()
+[P136] df['Happy']=(df['HappinessScore']>median_score).astype(int) X, y = df[FEATURES], df['Happy']
+[P138] # 3. Split&scale
+[P139] X_train, X_test, y_train, y_test = train_test_split( X,y,test_size=0.25,random_state=42,stratify=y)
+[P140] scaler= StandardScaler()
+[P141] X_train_s=scaler.fit_transform(X_train) X_test_s = scaler.transform(X_test)
+[P142] #4. Trainmodels
+[P143] log_reg=LogisticRegression(random_state=42).fit(X_train_s,y_train)
+[P144] dt=DecisionTreeClassifier(max_depth=4,random_state=42).fit(X_train_s,y_train)
+[P146] # 5.Evaluate
+[P147] y_pred= log_reg.predict(X_test_s)
+[P148] y_proba = log_reg.predict_proba(X_test_s)[:, 1] print('Accuracy:', accuracy_score(y_test, y_pred)) print('Precision:',precision_score(y_test,y_pred)) print('Recall:', recall_score(y_test, y_pred)) print('F1:', f1_score(y_test, y_pred))
+[P149] fpr,tpr,_=roc_curve(y_test,y_proba) print('AUC:', auc(fpr, tpr))
+
+--- Table 0 ---
+['Model', 'TrainAcc.', 'TestAcc.', 'Precision', 'Recall', 'F1-score', 'ROC-AUC']
+['Logistic\nRegression', '0.890', '0.835', '0.882', '0.769', '0.822', '0.939']
+['DecisionTree (depth=4)', '0.924', '0.747', '0.788', '0.667', '0.722', '0.857']
