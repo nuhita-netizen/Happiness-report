@@ -5,7 +5,7 @@
 ![Pandas](https://img.shields.io/badge/pandas-2.2.3-150458?logo=pandas)
 ![Status](https://img.shields.io/badge/Status-Completed-success)
 
-This repository contains the complete **4-Week Data Science & Analytics Project** analyzing global determinants of subjective well-being using the **World Happiness Report** dataset (`world_happiness_report.csv`). The project covers the full data science lifecycle: data cleaning, exploratory data analysis, visual storytelling, statistical hypothesis testing, and supervised machine learning.
+This repository contains the complete **5-Week Data Science & Analytics Capstone Project** analyzing global determinants of subjective well-being using the **World Happiness Report** dataset (`world_happiness_report.csv`). The project covers the full data science lifecycle: data cleaning, exploratory data analysis, visual storytelling, statistical hypothesis testing, supervised machine learning, and executive strategic reporting.
 
 ---
 
@@ -33,7 +33,7 @@ The **World Happiness Report** is a landmark survey of the state of global happi
 
 ---
 
-## 📁 4-Week Project Roadmap
+## 📁 5-Week Project Roadmap
 
 Each weekly milestone is thoroughly documented in its own dedicated directory with deliverables, scripts, and visualizations:
 
@@ -43,6 +43,7 @@ Each weekly milestone is thoroughly documented in its own dedicated directory wi
 | **Week 2** | **Advanced Visual Storytelling** | Multi-dimensional narratives, regional distributions, multivariate scatter plots, and correlation heatmaps. | [Explore Week 2 ➔](week2/) |
 | **Week 3** | **Statistical Hypothesis Testing** | Parametric inference, two-sample independent $t$-tests ($t=16.84, p < 0.0001$), and confidence intervals. | [Explore Week 3 ➔](week3/) |
 | **Week 4** | **Machine Learning & Evaluation** | Supervised classification and regression models (Linear, Ridge, Decision Tree, Random Forest, Gradient Boosting). | [Explore Week 4 ➔](week4/) |
+| **Week 5** | **Comprehensive Capstone & Strategy** | Executive project synthesis, strategic policy recommendations, business impact analysis, and final deliverable report. | [Explore Week 5 ➔](week5/) |
 
 ---
 
@@ -51,39 +52,45 @@ Each weekly milestone is thoroughly documented in its own dedicated directory wi
 ```plaintext
 Happiness-report/
 │
-├── .gitignore                          # Excludes temporary Office files, caches & envs
-├── requirements.txt                    # Project dependencies for one-command setup
-├── README.md                           # Master repository & dataset documentation
-├── world_happiness_report.csv          # Multi-year World Happiness dataset (2015–2022)
+├── .gitignore                                     # Excludes temporary Office files, caches & envs
+├── requirements.txt                               # Project dependencies for one-command setup
+├── README.md                                      # Master repository & dataset documentation
+├── world_happiness_report.csv                     # Multi-year World Happiness dataset (2015–2022)
 │
-├── week1/                              # Week 1: Data Acquisition & Exploratory Analysis
-│   ├── README.md                       # Week 1 documentation & cleaning rationales
-│   ├── The World Happiness Story.docx  # Deliverable document
-│   └── Week 1_Task .docx               # Deliverable document
+├── week1/                                         # Week 1: Data Acquisition & Exploratory Analysis
+│   ├── README.md                                  # Week 1 documentation & cleaning rationales
+│   ├── The World Happiness Story.docx             # Deliverable document
+│   └── Week 1_Task .docx                          # Deliverable document
 │
-├── week2/                              # Week 2: Visual Storytelling with Python
-│   ├── README.md                       # Visual narrative documentation
-│   ├── viz1_region_distribution.png    # Regional happiness score distributions
-│   ├── viz2_multivariate_scatter.png   # GDP vs. Happiness with Freedom/Health hue
-│   ├── viz3_correlation_matrix.png     # Heatmap of Pearson correlation coefficients
-│   ├── viz4_top_bottom_disparity.png   # Comparative disparity between top & bottom nations
-│   └── The World Happiness Story.docx  # Final narrative report
+├── week2/                                         # Week 2: Visual Storytelling with Python
+│   ├── README.md                                  # Visual narrative documentation
+│   ├── viz1_region_distribution.png               # Regional happiness score distributions
+│   ├── viz2_multivariate_scatter.png              # GDP vs. Happiness with Freedom/Health hue
+│   ├── viz3_correlation_matrix.png                # Heatmap of Pearson correlation coefficients
+│   ├── viz4_top_bottom_disparity.png              # Comparative disparity between top & bottom nations
+│   └── The World Happiness Story.docx             # Final narrative report
 │
-├── week3/                              # Week 3: Statistical Inference & Hypothesis Testing
-│   ├── README.md                       # Statistical test breakdown & p-value results
-│   ├── hypothesis_ttest_validation.png # Two-sample t-test distributions
-│   ├── WEEK 3_task.docx                # Formal statistical analysis report
-│   └── Screenshots/                    # Visual test verification captures
+├── week3/                                         # Week 3: Statistical Inference & Hypothesis Testing
+│   ├── README.md                                  # Statistical test breakdown & p-value results
+│   ├── hypothesis_ttest_validation.png            # Two-sample t-test distributions
+│   ├── WEEK 3_task.docx                           # Formal statistical analysis report
+│   └── Screenshots/                               # Visual test verification captures
 │
-└── week4/                              # Week 4: Machine Learning Modeling & Diagnostics
-    ├── README.md                       # ML architecture breakdown, ROC, and benchmarks
-    ├── train_models.py                 # Scikit-Learn training & evaluation pipeline
-    ├── generate_doc.py                 # Script generating the finalized deliverable DOCX
-    ├── Week4_ML_Report.docx            # Finalized Week 4 Report with diagnostics
-    ├── viz_model_comparison.png        # R² and RMSE benchmark across 5 ML algorithms
-    ├── viz_actual_vs_predicted.png     # Parity plot (Actual vs. Predicted)
-    ├── viz_residuals_analysis.png      # Residual distribution & heteroscedasticity checks
-    └── viz_feature_importance.png      # Gini feature importances from Random Forest
+├── week4/                                         # Week 4: Machine Learning Modeling & Diagnostics
+│   ├── README.md                                  # ML architecture breakdown, ROC, and benchmarks
+│   ├── train_models.py                            # Scikit-Learn training & evaluation pipeline
+│   ├── generate_doc.py                            # Script generating the finalized deliverable DOCX
+│   ├── Week4_ML_Report.docx                       # Finalized Week 4 Report with diagnostics
+│   ├── viz_model_comparison.png                   # R² and RMSE benchmark across 5 ML algorithms
+│   ├── viz_actual_vs_predicted.png                # Parity plot (Actual vs. Predicted)
+│   ├── viz_residuals_analysis.png                 # Residual distribution & heteroscedasticity checks
+│   └── viz_feature_importance.png                 # Gini feature importances from Random Forest
+│
+└── week5/                                         # Week 5: Comprehensive Capstone & Strategic Recommendations
+    ├── README.md                                  # Capstone overview & strategic policy insights
+    ├── generate_week5_doc.py                      # Script generating the master capstone report
+    ├── Week5_Comprehensive_Project_Report.docx    # Primary Executive Capstone Report Deliverable
+    └── Visualizations Gallery                     # Synthesized diagnostic figures
 ```
 
 ---
@@ -106,8 +113,8 @@ pip install -r requirements.txt
 # Run Week 4 ML models and generate all evaluation plots
 python week4/train_models.py
 
-# Compile the final Word report deliverable
-python week4/generate_doc.py
+# Compile the final Week 5 Capstone Project Report
+python week5/generate_week5_doc.py
 ```
 
 ---
